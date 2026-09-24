@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Матчи Лиги наций УЕФА</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; background: #0f172a; color: #e2e8f0; }
+  h1 { font-size: 1.5rem; }
+  .updated { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .match { background: #1e293b; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; }
+  .time { color: #38bdf8; font-weight: bold; }
+  .teams { font-size: 1.1rem; margin-top: 0.25rem; }
+  .league { color: #94a3b8; font-size: 0.85rem; margin-top: 0.25rem; }
+  .empty { color: #94a3b8; font-style: italic; }
+</style>
+</head>
+<body>
+  <h1>⚽ Матчи Лиги наций УЕФА</h1>
+  <div class="updated" id="updated">Загрузка...</div>
+  <div id="matches"></div>
+
+<script>
+fetch("matches.json?t=" + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("updated").textContent =
+      "Обновлено: " + data.updated + " | Дата: " + data.date;
+    const container = document.getElementById("matches");
+    if (!data.matches.length) {
+      container.innerHTML = '<div class="empty">Сегодня матчей Лиги наций нет.</div>';
+      return;
+    }
+    container.innerHTML = data.matches.map(m => `
+      <div class="match">
+        <div class="time">${m.time}</div>
+        <div class="teams">${m.home} — ${m.away}</div>
+        <div class="league">${m.league}</div>
+      </div>
+    `).join("");
+  })
+  .catch(() => {
+    document.getElementById("updated").textContent = "Ошибка загрузки данных.";
+  });
+</script>
+</body>
+</html>
