@@ -17,6 +17,8 @@ jobs:
         with:
           python-version: '3.11'
       - name: Fetch matches
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
         run: python fetch_data.py
       - name: Commit and push
         run: |
