@@ -1,5 +1,13 @@
 {
-  "updated": "2026-09-24 20:58 UTC",
+  "updated": "2026-09-24 21:01 UTC",
   "date": "2026-09-24",
-  "matches": []
+  "matches": [
+    {
+      "time": "07:00:00",
+      "home": "?",
+      "away": "?",
+      "league": "Rizin FF",
+      "date": "2026-09-10"
+    }
+  ]
 }
