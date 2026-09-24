@@ -1,33 +1,42 @@
 import json
+import os
 import urllib.request
 from datetime import datetime, timezone
 
+API_KEY = os.environ.get("API_FOOTBALL_KEY")
+if not API_KEY:
+    raise SystemExit("API_FOOTBALL_KEY is not set")
+
 today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-url = f"https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d={today}&s=Soccer"
+
+url = f"https://v3.football.api-sports.io/fixtures?date={today}&league=5&season=2026"
+req = urllib.request.Request(url, headers={
+    "x-apisports-key": API_KEY,
+    "x-rapidapi-host": "v3.football.api-sports.io",
+})
+
 print(f"Fetching: {url}")
 
 try:
-    with urllib.request.urlopen(url) as response:
+    with urllib.request.urlopen(req) as response:
         data = json.loads(response.read().decode("utf-8"))
 except Exception as e:
     print(f"Error fetching data: {e}")
-    data = {"events": []}
+    data = {"response": []}
 
-events = data.get("events") or []
-
-nations = [
-    e for e in events
-    if e.get("strLeague") and "Nations League" in e["strLeague"]
-]
+fixtures = data.get("response") or []
 
 matches = []
-for e in nations:
+for f in fixtures:
+    fixture = f.get("fixture", {})
+    teams = f.get("teams", {})
+    league = f.get("league", {})
     matches.append({
-        "time": e.get("strTime") or "TBD",
-        "home": e.get("strHomeTeam") or "?",
-        "away": e.get("strAwayTeam") or "?",
-        "league": e.get("strLeague") or "",
-        "status": e.get("strStatus") or "",
+        "time": (fixture.get("date") or "")[11:16] or "TBD",
+        "home": teams.get("home", {}).get("name") or "?",
+        "away": teams.get("away", {}).get("name") or "?",
+        "league": league.get("name") or "",
+        "status": (fixture.get("status") or {}).get("short") or "",
     })
 
 output = {
