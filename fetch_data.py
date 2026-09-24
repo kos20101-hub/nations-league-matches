@@ -7,9 +7,10 @@ API_KEY = os.environ.get("API_FOOTBALL_KEY")
 if not API_KEY:
     raise SystemExit("API_FOOTBALL_KEY is not set")
 
-today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+# Временно тестируем 2024 год
+today = "2024-09-10"
 
-url = f"https://v3.football.api-sports.io/fixtures?date={today}&league=5&season=2026"
+url = f"https://v3.football.api-sports.io/fixtures?date={today}&league=5&season=2024"
 req = urllib.request.Request(url, headers={
     "x-apisports-key": API_KEY,
     "x-rapidapi-host": "v3.football.api-sports.io",
