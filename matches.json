@@ -1,5 +1,13 @@
 {
-  "updated": "2026-10-02 05:16 UTC",
-  "date": "2026-10-02",
-  "matches": []
+  "updated": "2026-10-03 05:15 UTC",
+  "date": "2026-10-03",
+  "matches": [
+    {
+      "time": "11:30:00",
+      "home": "Arsenal",
+      "away": "Leeds United",
+      "league": "English Premier League",
+      "date": "2026-10-10"
+    }
+  ]
 }
